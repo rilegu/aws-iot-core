@@ -24,6 +24,7 @@ endif()
 target_sources(app PRIVATE
   "src/main.c"
   "src/aws_iot_core.c"
+  "src/aws_mqtt.c"
   ${creds}
 )
 
