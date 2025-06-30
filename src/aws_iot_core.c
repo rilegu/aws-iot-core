@@ -1,6 +1,6 @@
 #include "aws_iot_core.h"
 #include "aws_iot_config.h"
-#include "creds/creds.h" // Assuming this provides public_cert, private_key, ca_cert
+#include "creds/creds.h" // Provides public_cert, private_key, ca_cert
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,12 +40,13 @@ static ssize_t aws_iot_handle_received_message(struct aws_iot_client *client,
 	const size_t message_size = pub->message.payload.len;
 	const bool discarded = message_size > sizeof(client->app_buffer);
 
-	LOG_INF("RECEIVED on topic \"%s\" [ id: %u qos: %u ] payload: %u / %u B",
+	LOG_INF("=> RECEIVED on topic \"%s\" [ id: %u qos: %u ] payload: %u / %u B",
 		(const char *)pub->message.topic.topic.utf8, pub->message_id,
 		pub->message.topic.qos, message_size, (uint32_t)sizeof(client->app_buffer));
 
 	while (received < message_size) {
-		// Read payload from the MQTT client, store in app_buffer (or discard if too large)
+		// Read payload from the MQTT client, store in app_buffer (or discard if msg is too
+		// large)
 		uint8_t *p = discarded ? client->app_buffer : &client->app_buffer[received];
 
 		ret = mqtt_read_publish_payload_blocking(&client->mqtt.mqtt_client, p,
@@ -69,7 +70,7 @@ static ssize_t aws_iot_handle_received_message(struct aws_iot_client *client,
 		puback.message_id = pub->message_id;
 		mqtt_publish_qos1_ack(&client->mqtt.mqtt_client, &puback);
 	} break;
-	case MQTT_QOS_2_EXACTLY_ONCE: /* unhandled (not supported by AWS) */
+	case MQTT_QOS_2_EXACTLY_ONCE: /* unhandled (not supported by AWS :( */
 	case MQTT_QOS_0_AT_MOST_ONCE: /* nothing to do */
 	default:
 		break;

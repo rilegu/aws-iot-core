@@ -59,7 +59,7 @@ static void aws_mqtt_internal_event_cb(struct mqtt_client *mqtt_client, const st
 	struct aws_mqtt_client *client =
 		CONTAINER_OF(mqtt_client, struct aws_mqtt_client, mqtt_client);
 
-	LOG_DBG("MQTT event: %s [%u] result: %d", aws_mqtt_evt_type_to_str(evt->type), evt->type,
+	LOG_DBG("=> MQTT event: %s [%u] result: %d", aws_mqtt_evt_type_to_str(evt->type), evt->type,
 		evt->result);
 
 	if (client->event_cb) {
@@ -198,7 +198,8 @@ int aws_mqtt_resolve_broker_addr(struct aws_mqtt_client *client, const char *end
 		       MIN(ai->ai_addrlen, sizeof(struct sockaddr_storage)));
 
 		inet_ntop(AF_INET, &client->broker_addr.sin_addr, addr_str, sizeof(addr_str));
-		LOG_INF("Resolved: %s:%u", addr_str, htons(client->broker_addr.sin_port));
+		LOG_INF("=> Broker address resolved: %s:%u", addr_str,
+			htons(client->broker_addr.sin_port));
 	} else {
 		LOG_ERR("Failed to resolve hostname err = %d (errno = %d)", ret, errno);
 	}
@@ -223,7 +224,7 @@ int aws_mqtt_client_connect(struct aws_mqtt_client *client)
 	while (bo.retries_count <= bo.max_retries) {
 		ret = mqtt_connect(&client->mqtt_client);
 		if (ret == 0) {
-			LOG_INF("MQTT client connected.");
+			LOG_INF("=> MQTT client connected.");
 			client->connected = true;
 			goto exit;
 		}
@@ -255,7 +256,7 @@ int aws_mqtt_subscribe_topic(struct aws_mqtt_client *client, const char *topic, 
 		.message_id = 1u,
 	};
 
-	LOG_INF("Subscribing to %hu topic(s): \"%s\" (QoS %d)", sub_list.list_count, topic, qos);
+	LOG_INF("=> SUBSCRIBING to %hu topic(s): \"%s\" (QoS %d)", sub_list.list_count, topic, qos);
 
 	ret = mqtt_subscribe(&client->mqtt_client, &sub_list);
 	if (ret != 0) {
@@ -291,7 +292,7 @@ int aws_mqtt_publish_message(struct aws_mqtt_client *client, const char *topic, 
 		LOG_ERR("Failed to publish message: %d", ret);
 	}
 
-	LOG_INF("PUBLISHED on topic \"%s\" [ id: %u qos: %u ], payload: %u B", topic,
+	LOG_INF("=> PUBLISHED on topic \"%s\" [ id: %u qos: %u ], payload: %u B", topic,
 		msg.message_id, msg.message.topic.qos, payload_len);
 	LOG_HEXDUMP_DBG(payload, payload_len, "Published payload:");
 
@@ -309,7 +310,7 @@ int aws_mqtt_client_loop(struct aws_mqtt_client *client)
 	struct pollfd fds;
 
 	if (!client->connected) {
-		LOG_WRN("Client not connected, cannot run loop.");
+		LOG_WRN("=> Client not connected, cannot run loop.");
 		return -ENOTCONN;
 	}
 
@@ -378,7 +379,7 @@ int aws_mqtt_client_disconnect(struct aws_mqtt_client *client)
 		client->mqtt_client.transport.tcp.sock = -1;
 	}
 
-	LOG_INF("MQTT client disconnected.");
+	LOG_INF("=> MQTT client disconnected.");
 
 	return ret;
 }

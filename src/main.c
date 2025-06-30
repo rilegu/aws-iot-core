@@ -1,5 +1,6 @@
 #include "aws_iot_core.h"
 #include "aws_iot_config.h"
+#include "heartbeat.h"
 #include <zephyr/logging/log.h>
 #include <zephyr/kernel.h>
 #include "net_sample_common.h"
@@ -53,7 +54,7 @@ int main(void)
 			continue;
 		}
 
-		LOG_INF("Connected to AWS IoT Core successfully");
+		LOG_INF("=> Connected to AWS IoT Core successfully");
 
 		/* Run the client loop */
 		ret = aws_iot_client_loop(&aws_client);
@@ -64,7 +65,7 @@ int main(void)
 		/* Disconnect and cleanup */
 		aws_iot_client_disconnect(&aws_client);
 
-		LOG_INF("Disconnected from AWS IoT Core");
+		LOG_INF("=> Disconnected from AWS IoT Core");
 
 #if defined(CONFIG_MBEDTLS_MEMORY_DEBUG)
 		size_t cur_used, cur_blocks, max_used, max_blocks;
@@ -81,3 +82,7 @@ int main(void)
 
 	return 0;
 }
+
+// Start led blinking task
+K_THREAD_DEFINE(heartbeat_id, HEARTBEAT_THREAD_STACKSIZE, heartbeat_task, NULL, NULL, NULL, 2, 0,
+		0);

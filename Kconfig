@@ -1,8 +1,12 @@
+mainmenu "AWS IoT Core MQTT sample application"
 
-menu "AWS" mainmenu "AWS IoT Core MQTT sample application"
+menu "AWS"
 
-	config AWS_ENDPOINT string "AWS endpoint" default "" help
-	Endpoint(hostname) of the AWS MQTT broker.
+config AWS_ENDPOINT
+	string "AWS endpoint"
+	default ""
+	help
+	  Endpoint(hostname) of the AWS MQTT broker.
 	  Note that the endpoint is different when using AWS Device Advisor.
 
 config AWS_MQTT_PORT
@@ -59,9 +63,8 @@ config AWS_QOS
 	help
 	  Quality of Service to use for publishing and subscribing to topics.
 	  Notes:
-		- Use QoS 0 when passing DQP test suite
+		-Use QoS 0 when passing DQP test suite
 	  	- QoS 2 is not supported by AWS MQTT broker
-
 
 config AWS_EXPONENTIAL_BACKOFF
 	bool "enable exponential backoff"
