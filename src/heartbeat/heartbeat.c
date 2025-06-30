@@ -5,7 +5,7 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
 
-#define SLEEP_TIME_MS 500
+#define SLEEP_TIME_MS 1000
 #define LED0_NODE     DT_ALIAS(led0)
 
 void heartbeat_task(void)

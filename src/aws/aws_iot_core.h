@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <zephyr/net/mqtt.h>   // Keep for mqtt_publish_param, etc.
 #include <zephyr/net/socket.h> // Keep for sockaddr_in, etc.
-#include "aws_mqtt.h"          // Include the new MQTT abstraction header
+#include "mqtt/aws_mqtt.h"     // Include the new MQTT abstraction header
 
 /**
  * @brief AWS IoT Core client context structure.

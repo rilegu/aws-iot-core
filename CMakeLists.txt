@@ -23,9 +23,9 @@ endif()
 # Add all source files
 target_sources(app PRIVATE
   "src/main.c"
-  "src/aws_iot_core.c"
-  "src/aws_mqtt.c"
-  "src/heartbeat.c"
+  "src/aws/aws_iot_core.c"
+  "src/mqtt/aws_mqtt.c"
+  "src/heartbeat/heartbeat.c"
   ${creds}
 )
 

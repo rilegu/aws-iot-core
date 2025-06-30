@@ -1,5 +1,5 @@
 #include "aws_mqtt.h"
-#include "aws_iot_config.h" // For MQTT_BUFFER_SIZE, etc.
+#include "aws/aws_iot_config.h" // For MQTT_BUFFER_SIZE, etc.
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

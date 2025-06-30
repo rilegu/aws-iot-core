@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <zephyr/net/mqtt.h>
 #include <zephyr/net/socket.h>
-#include "aws_iot_config.h" // Include for MQTT_BUFFER_SIZE, MAX_RETRIES, etc.
+#include "../aws/aws_iot_config.h" // Include for MQTT_BUFFER_SIZE, MAX_RETRIES, etc.
 
 /**
  * @brief MQTT event handler callback function type.

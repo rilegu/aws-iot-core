@@ -1,6 +1,6 @@
-#include "aws_iot_core.h"
-#include "aws_iot_config.h"
-#include "heartbeat.h"
+#include "aws/aws_iot_core.h"
+#include "aws/aws_iot_config.h"
+#include "heartbeat/heartbeat.h"
 #include <zephyr/logging/log.h>
 #include <zephyr/kernel.h>
 #include "net_sample_common.h"
